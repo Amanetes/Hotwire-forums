@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  get 'main/index'
+  devise_for :users
   root to: 'main#index'
 end
