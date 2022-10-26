@@ -6,5 +6,5 @@ Rails.application.routes.draw do
 
   root to: 'main#index'
 
-  resources :discussions, only: [:index]
+  resources :discussions, only: %i[index new create]
 end

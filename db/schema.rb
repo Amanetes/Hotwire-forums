@@ -16,7 +16,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_26_125007) do
 
   create_table "discussions", force: :cascade do |t|
     t.string "name"
-    t.integer "status", default: 0
+    t.boolean "pinned", default: false
+    t.boolean "closed", default: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
