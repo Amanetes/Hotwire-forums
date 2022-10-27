@@ -1,9 +1,9 @@
 <div id="<%= dom_id(discussion) %>" class="mb-2">
-  <h2><%= discussion.name %></h2>
+  <h2><%= link_to discussion.name, discussion %></h2>
   Pinned: <%= discussion.pinned %> | Closed: <%= discussion.closed %>
   <div>
     <%= link_to "Edit", edit_discussion_path(discussion) %> |
-    <%= link_to "Delete", discussion, method: :delete, data: { "turbo-method": :delete,
+    <%= link_to "Delete", discussion, data: { "turbo-method": :delete,
                                                                turbo_confirm: "Are you sure? This cannot be undone" } %>
   </div>
 </div>

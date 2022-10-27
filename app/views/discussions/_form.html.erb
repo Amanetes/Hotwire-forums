@@ -1,31 +1,22 @@
-<%= form_with(model: discussion) do |form| %>
-  <% if discussion.errors.any? %>
-    <div id="error_explanation" class="alert alert-danger" role="alert">
-      <h2><%= pluralize(discussion.errors.count, "error") %> prevented this discussion from being saved:</h2>
-      <ul>
-        <% discussion.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_with(model: discussion) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
 
   <div class="mb-3">
-    <%= form.label :name, class: "form-label" %>
-    <%= form.text_field :name, placeholder: "How do I...?", class: "form-control" %>
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, placeholder: "How do I...?", class: "form-control" %>
   </div>
 
   <div class="mb-3">
-    <%= form.label :pinned, class: "form-label" %>
-    <%= form.check_box :pinned %>
+    <%= f.label :pinned, class: "form-label" %>
+    <%= f.check_box :pinned %>
   </div>
 
   <div class="mb-3">
-    <%= form.label :closed, class: "form-label" %>
-    <%= form.check_box :closed %>
+    <%= f.label :closed, class: "form-label" %>
+    <%= f.check_box :closed %>
   </div>
 
   <div class="mb-3">
-    <%= form.submit class: "btn btn-primary" %>
+    <%= f.submit class: "btn btn-primary" %>
   </div>
 <% end %>
