@@ -1,4 +1,5 @@
-<%= form_with(model: discussion, data: { turbo: false }) do |f| %>
+<%= turbo_frame_tag "#{dom_id(discussion)}_form" do %>
+<%= form_with(model: discussion) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <div class="mb-3">
@@ -27,4 +28,5 @@
   <div class="mb-3">
     <%= f.submit class: "btn btn-primary" %>
   </div>
+<% end %>
 <% end %>
