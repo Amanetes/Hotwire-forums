@@ -11,6 +11,7 @@ class DiscussionsController < ApplicationController
 
   def new
     @discussion = Discussion.new
+    @discussion.posts.build
   end
 
   def edit; end
@@ -51,6 +52,6 @@ class DiscussionsController < ApplicationController
   end
 
   def discussion_params
-    params.require(:discussion).permit(:name, :closed, :pinned)
+    params.require(:discussion).permit(:name, :closed, :pinned, post_attributes: %i[body])
   end
 end

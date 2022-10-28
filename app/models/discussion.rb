@@ -6,6 +6,8 @@ class Discussion < ApplicationRecord
 
   has_many :posts, dependent: :destroy
 
+  accepts_nested_attributes_for :posts
+
   # https://github.com/hotwired/turbo-rails/blob/main/app/models/concerns/turbo/broadcastable.rb
 
   after_create_commit -> { broadcast_prepend_to "discussions" }
