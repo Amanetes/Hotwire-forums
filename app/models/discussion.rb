@@ -10,6 +10,14 @@ class Discussion < ApplicationRecord
   validates :name, presence: true
 
   has_many :posts, dependent: :destroy
+  has_many :users, through: :posts
+  has_many :discussion_subscriptions, dependent: :destroy
+  has_many :optin_subscribers, -> { where(discussion_subscriptions: { subscription_type: :optin }) },
+           through: :discussion_subscriptions,
+           source: :user
+  has_many :optout_subscribers, -> { where(discussion_subscriptions: { subscription_type: :optout }) },
+           through: :discussion_subscriptions,
+           source: :user
 
   accepts_nested_attributes_for :posts
 
@@ -26,5 +34,25 @@ class Discussion < ApplicationRecord
   # We can use to_param on our models to get a more friendly URL, without needing a gem like FriendlyId
   def to_param
     "#{id}-#{name.downcase.to_s[0...100]}".parameterize
+  end
+
+  def subscribed_users
+    (users + optin_subscribers).uniq - optout_subscribers
+  end
+
+  def subscription_for(user)
+    return nil if user.nil?
+
+    discussion_subscriptions.find_by(user_id: user.id)
+  end
+
+  def toggle_subscription(user)
+    if subscription == subscription_for(user)
+      subscription.toggle!
+    elsif posts.where(user_id: user.id).any?
+      discussion_subscriptions.create(user: user, subscription_type: 'optout')
+    else
+      discussion_subscriptions.create(user: user, subscription_type: 'optin')
+    end
   end
 end
