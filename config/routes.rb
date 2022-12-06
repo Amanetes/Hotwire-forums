@@ -4,7 +4,13 @@ Rails.application.routes.draw do
   resources :categories
   devise_for :users
 
-  root to: 'main#index'
+  unauthenticated do
+    root to: 'main#index', as: :unauthenticated_root
+  end
+
+  authenticated do
+    root to: 'discussions#index'
+  end
 
   resources :discussions do
     resources :posts, only: %i[create show edit update destroy], module: :discussions
