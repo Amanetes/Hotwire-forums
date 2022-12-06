@@ -47,12 +47,39 @@ class Discussion < ApplicationRecord
   end
 
   def toggle_subscription(user)
-    if subscription == subscription_for(user)
+    if subscription = subscription_for(user)
       subscription.toggle!
     elsif posts.where(user_id: user.id).any?
       discussion_subscriptions.create(user: user, subscription_type: 'optout')
     else
       discussion_subscriptions.create(user: user, subscription_type: 'optin')
+    end
+  end
+
+  def subscribed?(user)
+    return false if user.nil?
+
+    if subscription = subscription_for(user)
+      subscription.subscription_type == 'optin'
+    else
+      posts.where(user_id: user.id).any?
+    end
+  end
+
+  def subscribed_reason(user)
+    return "You're not receiving notifications from this thread" if user.nil?
+
+    if subscription = subscription_for(user)
+      case subscription.subscription_type
+      when 'optout'
+        "You're ignoring this thread."
+      when 'optin'
+        "You're receiving notifications because you've subscribed to this thread."
+      end
+    elsif posts.where(user_id: user.id).any?
+      "You're receiving notifications because you've posted in this thread."
+    else
+      "You're not receiving notifications from this thread"
     end
   end
 end
