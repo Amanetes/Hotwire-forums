@@ -13,6 +13,8 @@ class Discussion < ApplicationRecord
 
   accepts_nested_attributes_for :posts
 
+  broadcasts_to :category, inserts_by: :prepend
+
   # https://github.com/hotwired/turbo-rails/blob/main/app/models/concerns/turbo/broadcastable.rb
 
   after_create_commit -> { broadcast_prepend_to 'discussions' }
